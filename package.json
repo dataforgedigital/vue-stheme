@@ -12,12 +12,10 @@
   ],
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "ts-node src/index.ts",
-    "test": "node dist/index.js"
+    "build": "tsc"
   },
   "bin": {
-    "vuest-demo": "./bin/vuest.js"
+    "vuest-demo": "bin/vuest.js"
   },
   "dependencies": {
     "@shopify/cli": "^3.72.1",
@@ -28,10 +26,12 @@
     "chalk": "^5.3.0",
     "sass": "^1.83.0",
     "sass-embedded": "^1.83.0",
-    "sass-loader": "^16.0.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
     "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
   }
 }

@@ -1,35 +1,12 @@
-#!/usr/bin/env node
-
 import { dirname, join, resolve } from 'path';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import * as defaultConfig from './config.js';
+import UserConfig from '../types/userConfig';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const vitePath = resolve(__dirname, '../../node_modules/.bin/vite');
-
-interface Config {
-  store?: string;
-  build?: {
-    prefix?: string;
-    outdir?: string;
-    javascript?: {
-      input: string; // TODO: add Record<string, string>
-      output?: string;
-      useLiquid?: boolean;
-      alias?: Record<string, string>;
-    };
-    styles?: {
-      useLiquid?: boolean;
-      alias?: Record<string, string>;
-      input: string | Record<string, string>;
-      output?: string;
-    };
-  };
-}
 
 const [mode] = process.argv.slice(2);
 
@@ -41,8 +18,8 @@ const DEFAULT_CONFIG_FILES = [
   'vuest.config.js',
 ];
 
-const resolveConfig = (config: Config | null) => {
-  const userConfig: Config = config ?? ({} as Config);
+const resolveConfig = (config: UserConfig | null) => {
+  const userConfig: UserConfig = config ?? ({} as UserConfig);
   let outputConfig = {
     ...userConfig,
   }
@@ -114,7 +91,20 @@ const loadConfigFromFile = async (configFile?: string, configRoot = process.cwd(
   }
 };
 
-(async () => {
+// Function to run the process
+const runProcess = (command: string, args: string[]) => {
+  const child = spawn(command, args, { stdio: 'inherit', shell: true });
+
+  child.on('close', (code) => {
+    console.log(`Process ${command} ${args.join(' ')} exited with code ${code}`);
+  });
+
+  child.on('error', (err) => {
+    console.error(`Failed to start process ${command}:`, err);
+  });
+};
+
+const run = async () => {
   const configObject = await loadConfigFromFile();
 
   if (! configObject?.store && mode === 'dev') {
@@ -125,24 +115,14 @@ const loadConfigFromFile = async (configFile?: string, configRoot = process.cwd(
 
   process.env.__VUEST_CONFIG = JSON.stringify(configObject);
 
-  // Hàm chạy tiến trình
-  const runProcess = (command: string, args: string[]) => {
-    const child = spawn(command, args, { stdio: 'inherit', shell: true });
-
-    child.on('close', (code) => {
-      console.log(`Process ${command} ${args.join(' ')} exited with code ${code}`);
-    });
-
-    child.on('error', (err) => {
-      console.error(`Failed to start process ${command}:`, err);
-    });
-  };
-
-  // Chạy 2 lệnh vite build
+  // Run 2 vite build commands
   console.log('Starting Vite build processes...');
 
+  const vitePath = resolve(__dirname, '../../node_modules/.bin/vite');
+  const shopifyPath = resolve(__dirname, '../../node_modules/.bin/shopify');
+
   if (configObject?.build?.javascript) {
-    // 1. Chạy vite build --watch
+    // 1. Run vite build --watch
     const viteDefaultConfig = join(__dirname, '../..', 'vite.config.ts');
     const defaultBuildArgs = ['build', '-c', viteDefaultConfig];
     if (mode === 'dev') {
@@ -153,7 +133,7 @@ const loadConfigFromFile = async (configFile?: string, configRoot = process.cwd(
   }
 
   if (configObject?.build?.styles) {
-    // 2. Chạy vite build --watch -c vite.style.config.ts
+    // 2. Run vite build --watch -c vite.style.config.ts
     const viteStyleConfig = join(__dirname, '../..', 'vite.style.config.ts');
     const styleBuildArgs = ['build', '-c', viteStyleConfig];
     if (mode === 'dev') {
@@ -166,6 +146,8 @@ const loadConfigFromFile = async (configFile?: string, configRoot = process.cwd(
     return;
   }
 
-  // 3. Chạy vite build --watch -c vite.style.config.ts
-  runProcess('shopify', ['theme', 'dev', '--store', configObject?.store as string]);
-})()
+  // 3. Run vite build --watch -c vite.style.config.ts
+  runProcess(shopifyPath, ['theme', 'dev', '--store', configObject?.store as string]);
+}
+
+run();
