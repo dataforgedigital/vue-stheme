@@ -1,23 +1,47 @@
 {
-  "name": "vuest-demo",
+  "name": "vuest",
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "description": "Help using VueJS in HTML",
+  "author": "Huan Hoang",
+  "license": "MIT",
   "exports": {
     ".": "./dist/index.js"
   },
+  "keywords": [
+    "shopify",
+    "vue",
+    "theme",
+    "liquid",
+    "javascript",
+    "html",
+    "vuest"
+  ],
   "files": [
     "dist",
     "bin"
   ],
-  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
   "bin": {
-    "vuest-demo": "bin/vuest.js"
+    "vuest": "bin/vuest.js"
   },
-  "dependencies": {
+  "engines": {
+    "node": ">=18.20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dataforgedigital/vue-stheme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dataforgedigital/vue-stheme/issues"
+  },
+  "homepage": "https://github.com/dataforgedigital/vue-stheme",
+  "devDependencies": {
+    "concurrently": "^9.1.0",
     "@shopify/cli": "^3.72.1",
     "@shopify/theme": "^3.58.2",
     "@types/node": "^22.10.2",
@@ -30,8 +54,5 @@
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
     "vue": "^3.5.13"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.0"
   }
 }
