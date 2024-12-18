@@ -1,0 +1,37 @@
+{
+  "name": "vuest-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "test": "node dist/index.js"
+  },
+  "bin": {
+    "vuest-demo": "./bin/vuest.js"
+  },
+  "dependencies": {
+    "@shopify/cli": "^3.72.1",
+    "@shopify/theme": "^3.58.2",
+    "@types/node": "^22.10.2",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue-jsx": "^4.1.1",
+    "chalk": "^5.3.0",
+    "sass": "^1.83.0",
+    "sass-embedded": "^1.83.0",
+    "sass-loader": "^16.0.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vue": "^3.5.13"
+  }
+}
