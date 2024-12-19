@@ -15,7 +15,7 @@ if (! ['dev', 'build'].includes(mode)) {
 }
 
 const DEFAULT_CONFIG_FILES = [
-  'vuest.config.js',
+  'svuet.config.js',
 ];
 
 const resolveConfig = (config: UserConfig | null) => {
@@ -113,7 +113,7 @@ const run = async () => {
     process.exit(1);
   }
 
-  process.env.__VUEST_CONFIG = JSON.stringify(configObject);
+  process.env.__SVUET_CONFIG = JSON.stringify(configObject);
 
   // Run 2 vite build commands
   console.log('Starting Vite build processes...');

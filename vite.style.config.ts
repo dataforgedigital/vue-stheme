@@ -1,25 +1,25 @@
 import { defineConfig } from 'vite';
 
-const vuestConfig = JSON.parse(process.env.__VUEST_CONFIG as string)
+const svuetConfig = JSON.parse(process.env.__SVUET_CONFIG as string)
 
-if (!vuestConfig) {
-  throw new Error('Vuest config not found');
+if (!svuetConfig) {
+  throw new Error('Svuet config not found');
 }
 
 export default defineConfig({
   root: process.cwd(),
   build: {
-    outDir: vuestConfig.build.outdir,
+    outDir: svuetConfig.build.outdir,
     emptyOutDir: false,
     minify: false,
     rollupOptions: {
-      input: vuestConfig.build.styles.input ?? {},
+      input: svuetConfig.build.styles.input ?? {},
       output: {
-        assetFileNames: `${vuestConfig.build.prefix}${vuestConfig.build.styles.output}`,
+        assetFileNames: `${svuetConfig.build.prefix}${svuetConfig.build.styles.output}`,
       }
     }
   },
   resolve: {
-    alias: vuestConfig.build.styles.alias ?? {},
+    alias: svuetConfig.build.styles.alias ?? {},
   },
 });

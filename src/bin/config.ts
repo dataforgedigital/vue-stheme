@@ -1,4 +1,4 @@
-export const defaultBuildPrefix = 'vuest'
+export const defaultBuildPrefix = 'svuet'
 export const defaultBuildOutDir = 'assets'
 export const defaultBuildOutputDir = 'assets'
 export const defaultBuildJavascriptOutputFile = '[name].js'
